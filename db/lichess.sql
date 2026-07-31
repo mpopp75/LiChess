@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'ee4c2ef8-25c8-11ee-a844-bc5ff470b0f9:1-68068';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'ee4c2ef8-25c8-11ee-a844-bc5ff470b0f9:1-68070';
 
 --
 -- Current Database: `lichess`
@@ -115,6 +115,19 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `v_performance`
+--
+
+DROP TABLE IF EXISTS `v_performance`;
+/*!50001 DROP VIEW IF EXISTS `v_performance`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `v_performance` AS SELECT 
+ 1 AS `dt`,
+ 1 AS `rating`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Dumping routines for database 'lichess'
 --
 
@@ -177,6 +190,24 @@ USE `lichess`;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_performance`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_performance`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`mpopp`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_performance` AS select cast(`a`.`created_at` as date) AS `dt`,(`a`.`player_rating` + `a`.`player_rating_diff`) AS `rating` from `games` `a` where (`a`.`created_at` = (select max(`b`.`created_at`) from `games` `b` where (cast(`b`.`created_at` as date) = cast(`a`.`created_at` as date)))) order by `a`.`created_at` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -188,4 +219,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-07-31  6:04:40
+-- Dump completed on 2026-07-31  7:20:01
